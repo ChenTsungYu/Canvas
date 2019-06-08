@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canvas basic</title>
+</head>
+<body>
+    <canvas id="mycanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('mycanvas');
+        const ctx = canvas.getContext("2d"); // 指定繪圖介面，在2D上繪圖
+
+        // 設定畫布尺寸，將畫布尺寸設為等同視窗尺寸大小，撐滿整個視窗
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+// 起始點座標(50,50)，繪製直線連到
+        ctx.beginPath(); // 開始進行繪圖
+        ctx.moveTo(50,50);
+        ctx.lineTo(100,100);
+        ctx.lineTo(250,20);
+        ctx.closePath();// 關閉繪製
+        ctx.fillStyle = "black"; // 繪製顏色
+        ctx.fill();  // 進行繪製
+
+    </script>
+</body>
+</html>

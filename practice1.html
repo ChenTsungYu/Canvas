@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>實作1</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      canvas {
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="mycanvas"></canvas>
+    <script>
+      const canvas = document.getElementById("mycanvas");
+      const ctx = canvas.getContext("2d"); // 指定繪圖介面，在2D上繪圖
+      //設定畫布尺寸
+      canvas.width = 400;
+      canvas.height = 400;
+      /*   
+      ctx.strokeStyle = "red";
+      ctx.strokeRect(100, 100, 200, 200);
+      ctx.strokeRect(300, 300, 100, 100);*/
+/*
+// 繪製矩形
+      ctx.beginPath();
+      ctx.moveTo(100, 100); // 起始點
+      ctx.lineTo(300, 100);
+      ctx.lineTo(300, 200);
+      ctx.lineTo(100, 300);
+      ctx.closePath();
+      ctx.rect(300, 300, 50, 50);
+     // ctx.stroke();  // 只繪製路徑
+      ctx.fill();  // 填滿圖形
+      */
+      
+      
+    </script>
+  </body>
+</html>
