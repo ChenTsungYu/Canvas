@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>castle</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      canvas {
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="mycanvas"></canvas>
+    <script>
+      const canvas = document.getElementById("mycanvas");
+      const ctx = canvas.getContext("2d"); // 指定繪圖介面，在2D上繪圖
+      //設定畫布尺寸
+      canvas.width = 400;
+      canvas.height = 400;
+
+      var time = 0;
+
+      // 所有的繪圖函數        執行影格的更新
+      function draw() {
+        time++;
+        console.log(time);
+        
+        ctx.clearRect(0, 0, 400, 400); // 清除畫布，每次都進行重畫
+
+        ctx.beginPath();
+        for (let i = 0; i < 10; i++) {
+          let pos = i * 50; // 50為一單位
+
+          // 繪製格線垂直軸
+          ctx.moveTo(pos, 0); // 每隔50單位畫一條格線
+          ctx.lineTo(pos, 400); //  延 y軸 畫至畫布高度
+          ctx.fillText(pos, pos, 10); // 繪製文字 (text, x, y, maxwidth)
+
+          // 繪製格線水平軸
+          ctx.moveTo(0, pos); // 每隔50單位畫一條格線
+          ctx.lineTo(400, pos); //   延 x軸 畫至畫布寬度
+          ctx.fillText(pos, 10, pos); // 繪製文字 (text, x, y, maxwidth)
+        }
+        ctx.strokeStyle = "rgba(0,0,0,0.3)";
+        ctx.stroke();
+
+        // 繪製地面
+        ctx.beginPath();
+        ctx.moveTo(25, 350); //基準線
+        ctx.lineTo(375, 350);
+        ctx.lineWidth = 2; // 線條寬度
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+
+        // 在(300, 300) 處繪製 一粉紅矩形
+        ctx.fillStyle = "#ed5a2a"; // 必須先上色
+        ctx.fillRect(300, 300, 50, 50);
+        ctx.strokeRect(300, 300, 50, 50);
+
+        // 繪製黃色矩形
+        ctx.beginPath();
+        ctx.rect(250, 250, 50, 100);
+        ctx.rect(50, 300, 50, 50);
+        ctx.fillStyle = "#ffe14f";
+        ctx.fill();
+        ctx.stroke();
+
+        // 繪製拱門兩側柱子
+        ctx.beginPath();
+        ctx.rect(100, 250, 50, 100);
+        ctx.rect(200, 250, 50, 100);
+        ctx.fillStyle = "#ff9f51";
+        ctx.fill();
+        ctx.stroke();
+
+        // 繪製拱門
+        ctx.beginPath();
+        ctx.moveTo(100, 200);
+        ctx.lineTo(250, 200);
+        ctx.lineTo(250, 250);
+        ctx.lineTo(200, 250);
+        // 圓心 (175,250) 半徑25 從360度至180度畫圓
+        ctx.arc(175, 250, 25, 2 * Math.PI, Math.PI, true);
+        ctx.lineTo(100, 250);
+        ctx.closePath();
+        ctx.fillStyle = "#fff";
+        ctx.fill();
+        ctx.stroke();
+
+        // 屋頂(roof)
+        ctx.beginPath();
+        ctx.moveTo(100, 200);
+        ctx.lineTo(175, 150);
+        ctx.lineTo(250, 200);
+        ctx.closePath();
+        ctx.fillStyle = "#f26248";
+        ctx.fill();
+        ctx.stroke();
+
+        // flag
+        ctx.beginPath();
+        ctx.moveTo(175, 150);
+        ctx.lineTo(175, 100 - (mouse.y / 5)); //  (mouse.y / 5) 表上升下降 
+        ctx.lineTo(200, 110 - (time % 5) - (mouse.y / 5)); // time % 5 表 flag震動
+        ctx.lineTo(175, 120 - (mouse.y / 5));
+        ctx.closePath();
+        // 顏色變動   色像範圍在0~360之間 ，滑鼠水平移動即可
+        ctx.fillStyle = "hsl("+(mouse.x % 360)+",50%,50%)";
+        ctx.fill();
+        ctx.stroke();
+
+        // car
+        ctx.beginPath();
+        ctx.fillStyle = "#ffffff";
+        //  當車子超出範圍即從頭跑一遍
+        let carx = (time % 440) - 40; // 40表車體寬度
+        ctx.fillRect(carx, 325, 40, 25); // 小技巧: 先填色再畫線，圖色時才不會把線蓋住
+        ctx.strokeRect(carx, 325, 40, 25);
+        // wheels
+        ctx.arc(carx + 10, 350, 5, 0, Math.PI * 2);
+        ctx.arc(carx + 30, 350, 5, 0, Math.PI * 2);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.stroke();
+
+        // mouse
+        ctx.beginPath();
+        // 圓心(mouse.x, mouse.y)，半徑:5 ，degree:0~360
+        ctx.arc(mouse.x, mouse.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = "black";
+        ctx.fill();
+      }
+      // draw()
+      //設定連續繪製
+      setInterval(draw, 10);
+
+      var mouse = { x: 0, y: 0 }; // 紀錄滑鼠位置
+      canvas.addEventListener("mousemove", event => {
+        mouse.x = event.offsetX; // 取得滑鼠位置進行賦值
+        mouse.y = event.offsetY; // 取得滑鼠位置進行賦值
+      });
+    </script>
+  </body>
+</html>
