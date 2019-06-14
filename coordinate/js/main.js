@@ -9,6 +9,13 @@ window.onload = function () {
     canvas.width = blockWidth * 3;
     canvas.height = blockWidth * 3;
 
+    // 自訂一個畫圓的函數
+    ctx.fillCircle = function (x, y, r) {
+        this.beginPath();
+        this.arc(x, y, r, 0, PI2);
+        this.fill();
+    }
+
     var color = {
         red: "#F74456",
         white: "#fff",
@@ -94,12 +101,129 @@ window.onload = function () {
                 ctx.rotate(PI / 2);
             }
         }, time)
-        drawBlock({ x: 0, y: 1 }, color.yellow, function () { }, time)
-        drawBlock({ x: 1, y: 1 }, color.white, function () { }, time)
-        drawBlock({ x: 2, y: 1 }, color.blue, function () { }, time)
-        drawBlock({ x: 0, y: 2 }, color.red, function () { }, time)
-        drawBlock({ x: 1, y: 2 }, color.blue, function () { }, time)
-        drawBlock({ x: 2, y: 2 }, color.yellow, function () { }, time)
+        // 1-2
+        drawBlock({ x: 0, y: 1 }, color.yellow, function () {
+            ctx.translate(-60, -60); // 移至左上方
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 60, 60);
+            ctx.translate(30, 30); // 移至方形中心
+            ctx.rotate(-PI / 4); // 轉45度
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(40, 0);
+            ctx.arc(40, 40, 40, -PI / 2, PI / 2);
+            ctx.lineTo(0, 80);
+            ctx.closePath();
+            ctx.fillStyle = color.red;
+            ctx.fill();
+
+            // 長方型 1
+            ctx.translate(-100 + 10 * Math.sin(time / 10), 60);
+            ctx.fillStyle = color.blue;
+            ctx.fillRect(0, 0, 100, 40);
+            // 長方型  2
+            ctx.translate(100 + 10 * Math.cos(time / 10), 40);
+            ctx.fillStyle = color.white;
+            ctx.fillRect(0, 0, 50, 20);
+        }, time)
+        // 2-2
+        drawBlock({ x: 1, y: 1 }, color.white, function () {
+            // 繪製扇形
+            ctx.beginPath();
+            ctx.fillStyle = color.red;
+
+            // 旋轉效果
+            // 0 ~ 100 / 100 = 0 ~ 1
+            // 0 ~ 1 * 360 = 0 ~ 360
+            let angle = (time % 100) / 100 * PI2; // 0~360 之間
+            let angle2 = (time % 50) / 50 * PI2;
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, 80, angle, angle2);
+            ctx.fill();
+
+            // 利用自訂畫圓形的函數繪製
+            ctx.fillStyle = color.yellow;
+            ctx.fillCircle(60, 60, 30);
+        }, time)
+        drawBlock({ x: 2, y: 1 }, color.blue, function () {
+            ctx.fillStyle = color.white;
+            ctx.fillCircle(0, 0, 80);
+            // 旋轉
+            ctx.rotate(time / 10);
+            ctx.fillStyle = color.red;
+            ctx.fillCircle(-30, 0, 20);
+            ctx.rotate(time / 20);
+            ctx.fillStyle = color.yellow;
+            ctx.fillCircle(40, 0, 50);
+
+
+        }, time)
+        drawBlock({ x: 0, y: 2 }, color.red, function () {
+            ctx.rotate(time / 100);
+            for (let i = 0; i < 8; i++) {
+                ctx.fillStyle = color.white;
+                let r = 16
+                if ((stime + i) % 4 < 2) {  // 變換大小
+                    r = 10
+                }
+                ctx.fillCircle(60, 0, r);
+                ctx.rotate(PI2 / 8);
+                ctx.fillStyle = color.blue;
+                ctx.fillCircle(35, 0, 5);
+            }
+        }, time)
+        drawBlock({ x: 1, y: 2 }, color.blue, function () {
+            // 黃色長方形
+            ctx.translate(-80, -100);
+            ctx.fillStyle = color.yellow;
+            ctx.fillRect(0, time % 200, 40, time % 200);
+            // 紅色長方形
+            ctx.translate(40, 40);
+            ctx.fillStyle = color.red;
+            ctx.fillRect(0, 0, 120, 80);
+            ctx.fillStyle = color.white;
+            // 兩個白色圓
+            ctx.fillCircle(0, 40, stime % 20);
+            ctx.fillCircle(70, 40, stime % 10);
+
+            // 白色長方形
+            ctx.translate(70, 80);
+            ctx.fillRect(0, 0, 50, 80);
+
+        }, time)
+        drawBlock({ x: 2, y: 2 }, color.yellow, function () {
+            // 左方白色三角型
+            ctx.beginPath();
+            ctx.moveTo(-100, -100);
+            ctx.lineTo(0, -100);
+            ctx.lineTo(-100, 100);
+            ctx.closePath();
+            ctx.fillStyle = color.white;
+            ctx.fill();
+
+            // 右方白色三角型(以中心為基準轉180度)
+            ctx.rotate(PI);
+
+            ctx.save(); // 儲存紅色三角形狀態
+            ctx.translate(time % 100, 0);
+            ctx.beginPath();
+            ctx.moveTo(-100, -100);
+            ctx.lineTo(0, -100);
+            ctx.lineTo(-100, 100);
+            ctx.closePath();
+            ctx.fillStyle = color.red;
+            ctx.fill();
+            ctx.restore();
+
+            ctx.beginPath();
+            ctx.moveTo(-100, -100);
+            ctx.lineTo(0, -100);
+            ctx.lineTo(-100, 100);
+            ctx.closePath();
+            ctx.fillStyle = color.white;
+            ctx.fill();
+
+        }, time)
         // 似setTimeout
         requestAnimationFrame(draw);
     }
