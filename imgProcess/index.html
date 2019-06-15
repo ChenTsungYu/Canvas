@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>imgProcess</title>
+</head>
+<body>
+    
+    <input  type="file" onchange="loadFile(this)">
+    <button id="btn" >Save File</button>
+    <a id = "download"></a>
+    <canvas id="cvs" style="width: 800; height: 600;"></canvas>
+
+    <script >
+        var cvs , ctx;
+        cvs  = document.getElementById('cvs');
+        ctx = cvs.getContext('2d');
+
+        //  載入影像
+    //    const img = new Image(); // 瀏覽器內建的物件(相當於影像標籤)
+   //     img.src = "./2.png";
+        // 繪製影像
+        //  drawImage(Image, dX, dY, dWidth, dHeight)
+        //  img 為影像物件
+
+       /* img.onload = function () { 
+            ctx.drawImage(this, 0, 0, cvs.clientWidth, cvs.clientHeight);
+         }*/
+         
+         // 讓使用者載入圖片
+         function loadFile(input) { 
+            const file = input.files[0];
+            //console.log(file);
+            const src = URL.createObjectURL(file);
+            const img = new Image(); // 瀏覽器內建的物件(相當於影像標籤)
+            img.src = src;
+            img.onload = function () { 
+                ctx.drawImage(this, 0 , 0, cvs.clientWidth, cvs.clientHeight)
+             }
+          }
+          btn.addEventListener('click',saveFile)
+            // 儲存檔案
+          function saveFile() { 
+           // console.log(ev.target);
+            let link = document.getElementById('download');
+            link.download = "2.png";
+            link.href = cvs.toDataURL("jpeg"); // 儲存為 jpeg格式
+            link.click();
+           }
+        
+        
+
+    </script>
+</body>
+</html>

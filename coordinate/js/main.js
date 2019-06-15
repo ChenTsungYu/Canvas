@@ -33,6 +33,7 @@ window.onload = function () {
         ctx.translate(100, 100);
         draw()
         ctx.restore(); // 還原成初始狀態
+        
     }
 
     var time = 0;
